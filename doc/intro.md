@@ -35,23 +35,35 @@ in turn, can be rendered to a portable geometric description like
 [G-code](https://en.wikipedia.org/wiki/G-code) and the G-code can
 steer a 3D printer.
 
+```mermaid
+flowchart TD
+    Start((Start))
+    A["Edit settings<br>(.yaml)"]
+    B["Run DMOTE appplication<br>(.clj or .jar)"]
+    subgraph OpenSCAD
+        C["Preview<br>(.scad)"]
+        D["Render<br>(.stl)"]
+    end
+    E["Slice<br>(.gcode)"]
+    F[Print]
+    End((End))
+
+    Start --> A
+    A --> B --> C
+    B -->|"Extra CLI flag<br>(--render)"| D
+    D --> E --> F --> End
+    C -->|Manual control| D
+    C -->|Redesign| A
+```
+
 OpenSCAD can represent the model visually, but there is no step in this process
 where you point and click with a mouse to change the design. The shape of the
 keyboard is determined by your written parameters to the Clojure application.
 It’s programmatic CAD, without the drafting-table skeuomorph of construction
 lines.
 
-Roughly, the build chain looks like this:
-
-> parameters through this app (compiled) → preview → rendering → slicing → printing
-
-Equivalently, in terms of typical file name endings:
-
-> .yaml through .clj (or .jar) → .scad → .stl → .gcode → tangible keyboard
-
 If this repository includes STL files you will find them in the `things/stl`
-directory. They should be ready to print. Otherwise, here’s how to make your
-own.
+directory. Otherwise, here’s how to make your own.
 
 ### Setting up the build environment
 
